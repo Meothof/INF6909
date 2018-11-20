@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  form(action='http://localhost:3000/postdata' method='POST')
+    table
+      tr
+        th 
+          | Emotions
+        th 
+          | Current values
+        th
+          | New values
+      tbody
+        tr
+          td
+            | Anger
+          td
+            | !{truncEmotions.anger}%
+          td
+            input(name='anger' type='range' value=emotions.anger min='0' max='1' step='0.05')
+        tr
+          td
+            | Disgust
+          td
+            | !{truncEmotions.disgust}%
+          td
+            input(name='disgust' type='range' value=emotions.disgust min='0' max='1' step='0.05')
+        tr
+          td
+            | Fear
+          td
+            | !{truncEmotions.fear}%
+          td
+            input(name='fear' type='range' value=emotions.fear min='0' max='1' step='0.05')
+        tr
+          td
+            | Happiness
+          td
+            | !{truncEmotions.happiness}%
+          td
+            input(name='happiness' type='range' value=emotions.happiness min='0' max='1' step='0.05')
+        tr
+          td
+            | Surprise
+          td
+            | !{truncEmotions.surprise}%
+          td
+            input(name='surprise' type='range' value=emotions.surprise min='0' max='1' step='0.05')
+        tr
+          td
+            | Sadness
+          td
+            | !{truncEmotions.sadness}%
+          td
+            input(name='sadness' type='range' value=emotions.sadness min='0' max='1' step='0.05')
+    button(type='submit') Send
