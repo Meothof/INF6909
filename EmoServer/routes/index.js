@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const data = {
+const emotions = {
   anger: 0,
   fear: 0,
   disgust: 0,
@@ -10,46 +10,83 @@ const data = {
   sadness: 0
 };
 
+const transitionTimes = {
+  anger: 1,
+  fear: 1,
+  disgust: 1,
+  happiness: 1,
+  surprise: 1,
+  sadness: 1
+};
+
 /* GET home page. */
 router.get('/', (req, res, next) => {
   res.render('index', { title: 'Express' });
 });
 
 router.get('/setdata', (req, res, next) => {
-  res.render('inputForm', {emotions: data, truncEmotions: truncData()});
+  res.render('inputForm', {
+    emotions: emotions,
+    transitionTime: transitionTimes,
+    truncEmotions: truncEmotions(),
+    time: calcTime()
+  });
 });
 
 router.post('/postdata', (req, res, next) => {
-  updateData(req);
+  updateEmotions(req.body);
+  updateTransitionTimes(req.body);
   res.redirect('/setdata');
 });
 
 /* Display data */
 router.get('/getdata', (req, res, next) => {
-  res.json(data);
+  res.json({
+    emotions: emotions,
+    transitionTime: calcTime()
+  });
 })
 
-function updateData(req) {
-  let sum = parseFloat(req.body.anger) + parseFloat(req.body.fear) + parseFloat(req.body.disgust)
-           + parseFloat(req.body.happiness) + parseFloat(req.body.surprise) + parseFloat(req.body.sadness);
-  data.anger = parseFloat(req.body.anger) / sum;
-  data.fear = parseFloat(req.body.fear) / sum;
-  data.disgust = parseFloat(req.body.disgust) / sum;
-  data.happiness = parseFloat(req.body.happiness) / sum;
-  data.surprise = parseFloat(req.body.surprise) / sum;
-  data.sadness = parseFloat(req.body.sadness) / sum;
+function updateEmotions(reqBody) {
+  let sum = parseFloat(reqBody.anger) + parseFloat(reqBody.fear) + parseFloat(reqBody.disgust)
+           + parseFloat(reqBody.happiness) + parseFloat(reqBody.surprise) + parseFloat(reqBody.sadness);
+  emotions.anger = parseFloat(reqBody.anger) / sum;
+  emotions.fear = parseFloat(reqBody.fear) / sum;
+  emotions.disgust = parseFloat(reqBody.disgust) / sum;
+  emotions.happiness = parseFloat(reqBody.happiness) / sum;
+  emotions.surprise = parseFloat(reqBody.surprise) / sum;
+  emotions.sadness = parseFloat(reqBody.sadness) / sum;
 }
 
-function truncData() {
+function updateTransitionTimes(reqBody) {
+  transitionTimes.anger = parseFloat(reqBody.angerTime);
+  transitionTimes.fear = parseFloat(reqBody.fearTime);
+  transitionTimes.disgust = parseFloat(reqBody.disgustTime);
+  transitionTimes.happiness = parseFloat(reqBody.happinessTime);
+  transitionTimes.surprise = parseFloat(reqBody.surpriseTime);
+  transitionTimes.sadness = parseFloat(reqBody.sadnessTime);
+}
+
+function truncEmotions() {
   return {
-    anger: Math.round(data.anger * 100),
-    fear: Math.round(data.fear * 100),
-    disgust: Math.round(data.disgust * 100),
-    happiness: Math.round(data.happiness * 100),
-    surprise: Math.round(data.surprise * 100),
-    sadness: Math.round(data.sadness * 100)
+    anger: Math.round(emotions.anger * 100),
+    fear: Math.round(emotions.fear * 100),
+    disgust: Math.round(emotions.disgust * 100),
+    happiness: Math.round(emotions.happiness * 100),
+    surprise: Math.round(emotions.surprise * 100),
+    sadness: Math.round(emotions.sadness * 100)
   }
 }
 
+function calcTime() {
+  let time = 0;
+  time += emotions.anger * transitionTimes.anger
+        + emotions.fear * transitionTimes.fear
+        + emotions.disgust * transitionTimes.disgust
+        + emotions.happiness * transitionTimes.happiness
+        + emotions.surprise * transitionTimes.surprise
+        + emotions.sadness * transitionTimes.sadness
+  return  Math.round( time * 100) / 100;
+} 
 
 module.exports = router;
