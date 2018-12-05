@@ -50,6 +50,7 @@ router.get('/getdata', (req, res, next) => {
 function updateEmotions(reqBody) {
   let sum = parseFloat(reqBody.anger) + parseFloat(reqBody.fear) + parseFloat(reqBody.disgust)
            + parseFloat(reqBody.happiness) + parseFloat(reqBody.surprise) + parseFloat(reqBody.sadness);
+  sum = (sum === 0) ? 1 : sum;
   emotions.anger = parseFloat(reqBody.anger) / sum;
   emotions.fear = parseFloat(reqBody.fear) / sum;
   emotions.disgust = parseFloat(reqBody.disgust) / sum;
