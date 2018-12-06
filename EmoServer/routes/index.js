@@ -60,12 +60,12 @@ function updateEmotions(reqBody) {
 }
 
 function updateTransitionTimes(reqBody) {
-  transitionTimes.anger = parseFloat(reqBody.angerTime);
-  transitionTimes.fear = parseFloat(reqBody.fearTime);
-  transitionTimes.disgust = parseFloat(reqBody.disgustTime);
-  transitionTimes.happiness = parseFloat(reqBody.happinessTime);
-  transitionTimes.surprise = parseFloat(reqBody.surpriseTime);
-  transitionTimes.sadness = parseFloat(reqBody.sadnessTime);
+  transitionTimes.anger = parseFloat(reqBody.angerTime || 1);
+  transitionTimes.fear = parseFloat(reqBody.fearTime || 1);
+  transitionTimes.disgust = parseFloat(reqBody.disgustTime || 1);
+  transitionTimes.happiness = parseFloat(reqBody.happinessTime || 1);
+  transitionTimes.surprise = parseFloat(reqBody.surpriseTime || 1);
+  transitionTimes.sadness = parseFloat(reqBody.sadnessTime || 1);
 }
 
 function truncEmotions() {
